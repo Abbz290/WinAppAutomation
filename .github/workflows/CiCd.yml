@@ -21,7 +21,8 @@ jobs:
       with:
         dotnet-version: '8.0'  # Set to .NET 8.0
     - name: Add Local NuGet Source
-      run: nuget add source "C:\Program Files\DevExpress 24.2\Components" -Name "Offline Packages"
+      run: |
+        nuget add source "C:\Program Files\DevExpress 24.2\Components" -Name "Offline Packages"
     - name: Restore Dependencies
       run: dotnet restore WinAppAutomation.sln
 
