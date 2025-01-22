@@ -24,7 +24,7 @@ jobs:
       run: |
         nuget sources add -Source "C:\Program Files\DevExpress 24.2\Components" -Name "Offline Packages"
     - name: Restore Dependencies
-      run: dotnet restore WinAppAutomation.sln
+      run: dotnet restore WinAppAutomation.sln --configfile "C:\Program Files\DevExpress 24.2\Components"
 
     - name: Build the Application
       run: dotnet build WinAppAutomation.sln --configuration Release
