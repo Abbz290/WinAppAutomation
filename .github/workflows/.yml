@@ -1,1 +1,32 @@
+name: CI/CD for DevExpress XPO WinForms App
 
+on:
+  push:
+    branches:
+      - master  # Trigger on pushes to the main branch
+  pull_request:
+    branches:
+      - master  # Trigger on PRs to the main branch
+
+jobs:
+  build:
+    runs-on: windows-latest  # Use a Windows environment for your WinForms app
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up .NET 8.0
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '8.0'  # Set to .NET 8.0
+
+    - name: Restore Dependencies
+      run: dotnet restore WinAppAutomation.csproj
+
+    - name: Build the Application
+      run: dotnet build WinAppAutomation.csproj --configuration Release
+
+    - name: Run Tests (if applicable)
+      run: |
+        dotnet test WinAppAutomation/Person.Tests.csproj
