@@ -21,6 +21,10 @@ jobs:
       with:
         dotnet-version: '8.0'  # Set to .NET 8.0
 
+    - name: Remove Existing NuGet Source (if any)
+      run: |
+        nuget sources remove -Name "DevExpress Offline" || echo "No source found to remove"
+
     - name: Add DevExpress Offline NuGet Source
       run: |
         nuget sources add -Name "DevExpress Offline" -Source "C:\Program Files\DevExpress 24.2\Components\Offline Packages"
