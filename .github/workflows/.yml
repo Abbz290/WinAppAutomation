@@ -22,11 +22,11 @@ jobs:
         dotnet-version: '8.0'  # Set to .NET 8.0
 
     - name: Restore Dependencies
-      run: dotnet restore WinAppAutomation/WinAppAutomation.csproj
+      run: dotnet restore WinAppAutomation/WinAppAutomation.sln
 
     - name: Build the Application
-      run: dotnet build WinAppAutomation/WinAppAutomation.csproj --configuration Release
+      run: dotnet build WinAppAutomation/WinAppAutomation.sln --configuration Release
 
     - name: Run Tests (if applicable)
       run: |
-        dotnet test WinAppAutomation/Person.Tests.csproj
+        dotnet test WinAppAutomation/PersonTests/PersonTests.csproj
