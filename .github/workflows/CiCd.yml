@@ -23,7 +23,7 @@ jobs:
 
     - name: Add DevExpress Offline NuGet Source
       run: |
-        nuget sources add -Name "DevExpress Offline" -Source "C:\Program Files\DevExpress 24.2\Components"
+        nuget sources add -Name "DevExpress Offline" -Source "C:\Program Files\DevExpress 24.2\Components\Offline Packages"
 
     - name: Restore Dependencies using nuget.config
       run: dotnet restore WinAppAutomation.sln --configfile nuget.config
