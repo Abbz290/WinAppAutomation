@@ -47,6 +47,7 @@ static class Program {
             Tracing.LocalUserAppDataPath = Application.LocalUserAppDataPath;
         }
         Tracing.Initialize();
+        //xyz
 
         string connectionString = null;
         if(ConfigurationManager.ConnectionStrings["ConnectionString"] != null) {
