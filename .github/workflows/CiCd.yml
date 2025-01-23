@@ -34,13 +34,17 @@ jobs:
       run: dotnet test PersonTests/PersonTests.csproj --configuration Release
       
     - name: Deploy via SSH
-      uses: appleboy/ssh-action@v0.1.7
-      with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USERNAME }}
-        password: ${{ secrets.SSH_PASSWORD }}
-        port: 22
-        script: |
-          mkdir -p "C:/Deployments/WinAppAutomation"
-          scp -r .\bin\Release\net8.0\* ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:"C:/Deployments/WinAppAutomation"
+      env:
+        SSH_HOST: ${{ secrets.SSH_HOST }}
+        SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
+        SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
+      run: |
+        # Install OpenSSH client if not already installed
+        choco install openssh -y
+        
+        # Use SCP to copy files to the remote machine
+        scp -r .\bin\Release\net8.0\* $env:SSH_USERNAME@$env:SSH_HOST:"C:/Deployments/WinAppAutomation"
+
+        # SSH into the remote machine to verify deployment
+        ssh $env:SSH_USERNAME@$env:SSH_HOST "dir C:/Deployments/WinAppAutomation"
     
