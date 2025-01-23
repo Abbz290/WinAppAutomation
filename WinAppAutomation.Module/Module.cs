@@ -29,6 +29,7 @@ public sealed class WinAppAutomationModule : ModuleBase {
     public override IEnumerable<ModuleUpdater> GetModuleUpdaters(IObjectSpace objectSpace, Version versionFromDB) {
         ModuleUpdater updater = new DatabaseUpdate.Updater(objectSpace, versionFromDB);
         return new ModuleUpdater[] { updater };
+        //workflow
     }
     public override void Setup(XafApplication application) {
         base.Setup(application);
