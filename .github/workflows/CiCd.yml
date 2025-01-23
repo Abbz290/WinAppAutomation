@@ -46,7 +46,7 @@ jobs:
         mkdir "C:/Deployments/WinAppAutomation"
 
         # Use SCP to copy files to the local machine's destination directory
-        scp -r ./bin/Release/net8.0-windows/* $env:SSH_USERNAME@$env:SSH_HOST:"C:/Deployments/WinAppAutomation"
+        scp -r C:/Users/abbz2/source/repos/WinAppAutomation/WinAppAutomation.Win/bin/Release/net8.0-windows/* $env:SSH_USERNAME@$env:SSH_HOST:"C:/Deployments/WinAppAutomation"
         
         # SSH into the local machine to verify deployment
         ssh $env:SSH_USERNAME@$env:SSH_HOST "dir C:/Deployments/WinAppAutomation"
