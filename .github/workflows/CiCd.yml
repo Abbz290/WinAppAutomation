@@ -39,15 +39,9 @@ jobs:
         SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
         SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
       run: |
-        # Install OpenSSH client if not already installed (for SSH/SCP on Windows)
-        choco install openssh -y
+        # Deploy build files to local machine using SCP
+        scp -r ./WinAppAutomation.Win/bin/Release/net8.0-windows/* ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:"C:/Deployments/WinAppAutomation"
         
-        # Ensure the destination folder exists on the local machine (you can change this path)
-        mkdir "C:/Deployments/WinAppAutomation"
-
-        # Use SCP to copy files to the local machine's destination directory
-        scp -r C:/Users/abbz2/source/repos/WinAppAutomation/WinAppAutomation.Win/bin/Release/net8.0-windows/* $env:SSH_USERNAME@$env:SSH_HOST:"C:/Deployments/WinAppAutomation"
-        
-        # SSH into the local machine to verify deployment
-        ssh $env:SSH_USERNAME@$env:SSH_HOST "dir C:/Deployments/WinAppAutomation"
+        # Optionally, you could also trigger a script to run your app after deployment
+        ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "start C:/Deployments/WinAppAutomation/WinAppAutomation.Win.exe"
     
