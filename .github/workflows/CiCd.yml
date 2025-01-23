@@ -33,18 +33,21 @@ jobs:
     - name: Run Tests
       run: dotnet test PersonTests/PersonTests.csproj --configuration Release
       
-    - name: Deploy via SSH
+    - name: Deploy via SSH to Local Machine
       env:
         SSH_HOST: ${{ secrets.SSH_HOST }}
         SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
         SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
       run: |
-        # Install OpenSSH client if not already installed
+        # Install OpenSSH client if not already installed (for SSH/SCP on Windows)
         choco install openssh -y
         
-        # Use SCP to copy files to the remote machine
-        scp -r .\bin\Release\net8.0\* $env:SSH_USERNAME@$env:SSH_HOST:"C:/Deployments/WinAppAutomation"
+        # Ensure the destination folder exists on the local machine (you can change this path)
+        mkdir "C:/Deployments/WinAppAutomation"
 
-        # SSH into the remote machine to verify deployment
+        # Use SCP to copy files to the local machine's destination directory
+        scp -r ./bin/Release/net8.0-windows/* $env:SSH_USERNAME@$env:SSH_HOST:"C:/Deployments/WinAppAutomation"
+        
+        # SSH into the local machine to verify deployment
         ssh $env:SSH_USERNAME@$env:SSH_HOST "dir C:/Deployments/WinAppAutomation"
     
