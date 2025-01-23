@@ -21,15 +21,11 @@ jobs:
       with:
         dotnet-version: '8.0'  # Set to .NET 8.0
 
-    - name: List NuGet Sources
-      run: nuget sources list
+    - name: Configure DevExpress NuGet Source
+      run: nuget sources add -Name "https://nuget.devexpress.com/U6YRYNe1qarLOLMFwYiU2R1jQRVmex9dq9SgVPQCd4EtEuhzhU/api/v3/index.json"
 
-    - name: Add DevExpress Offline NuGet Source
-      run: |
-        nuget sources add -Name "DevExpress Offline" -Source "C:\Program Files\DevExpress 24.2\Components\Offline Packages"
-
-    - name: Restore Dependencies using nuget.config
-      run: dotnet restore WinAppAutomation.sln --configfile nuget.config
+    - name: Restore Dependencies
+      run: dotnet restore WinAppAutomation.sln
 
     - name: Build the Application
       run: dotnet build WinAppAutomation.sln --configuration Release
