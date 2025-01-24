@@ -42,11 +42,17 @@ jobs:
     - name: Deploy Application Locally
       run: |
         echo "Deploying build files locally..."
-        copy .\WinAppAutomation.Win\bin\Release\net8.0-windows\* C:\Deployments\WinAppAutomation\
+        # Ensure the destination folder exists
+        if (-not (Test-Path -Path "C:\Deployments\WinAppAutomation")) {
+          New-Item -Path "C:\Deployments\WinAppAutomation" -ItemType Directory
+        }
+        # Copy the files to the destination
+        Copy-Item -Path .\WinAppAutomation.Win\bin\Release\net8.0-windows\* -Destination "C:\Deployments\WinAppAutomation\" -Recurse -Force
         echo "Deployment completed successfully."
 
     - name: Run the Application
       run: |
         echo "Starting the application..."
+        # Start the application locally
         start C:\Deployments\WinAppAutomation\WinAppAutomation.Win.exe
     
