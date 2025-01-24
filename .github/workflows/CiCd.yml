@@ -3,14 +3,14 @@ name: CI/CD for DevExpress XPO WinForms App
 on:
   push:
     branches:
-      - master  # Trigger on pushes to the main branch
+      - master  # Trigger on pushes to the master branch
   pull_request:
     branches:
-      - master  # Trigger on PRs to the main branch
+      - master  # Trigger on pull requests to the master branch
 
 jobs:
   build:
-    runs-on: windows-latest  # Use a Windows environment for your WinForms app
+    runs-on: self-hosted  # Use the self-hosted runner
 
     steps:
     - name: Checkout Repository
@@ -32,16 +32,15 @@ jobs:
 
     - name: Run Tests
       run: dotnet test PersonTests/PersonTests.csproj --configuration Release
-      
-    - name: Deploy via SSH to Local Machine
-      env:
-        SSH_HOST: ${{ secrets.SSH_HOST }}
-        SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
-        SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
+
+    - name: Deploy Application Locally
       run: |
-        # Deploy build files to local machine using SCP
-        scp -r ./WinAppAutomation.Win/bin/Release/net8.0-windows/* ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:"C:/Deployments/WinAppAutomation"
-        
-        # Optionally, you could also trigger a script to run your app after deployment
-        ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "start C:/Deployments/WinAppAutomation/WinAppAutomation.Win.exe"
+        echo "Deploying build files locally..."
+        copy .\WinAppAutomation.Win\bin\Release\net8.0-windows\* C:\Deployments\WinAppAutomation\
+        echo "Deployment completed successfully."
+
+    - name: Run the Application
+      run: |
+        echo "Starting the application..."
+        start C:\Deployments\WinAppAutomation\WinAppAutomation.Win.exe
     
