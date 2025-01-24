@@ -33,8 +33,24 @@ jobs:
     - name: Build the Application
       run: dotnet build WinAppAutomation.sln --configuration Release
 
-    - name: Run Tests
-      run: dotnet test PersonTests/PersonTests.csproj --configuration Release
+    - name: Run Tests with Coverage Check
+      run: |
+        dotnet test PersonTests/PersonTests.csproj --configuration Release --collect:"XPlat Code Coverage" \
+        -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=json \
+        --results-directory ./TestResults
+        
+        # Generate coverage report
+        reportgenerator "-reports:./TestResults/**/coverage.cobertura.xml" "-targetdir:./CoverageReport"
+
+        # Check coverage threshold
+        coverage=$(jq '. | tonumber' ./CoverageReport/coverage.json)
+        echo "Coverage: $coverage%"
+        if [ "$coverage" -lt 80 ]; then
+          echo "Test coverage ($coverage%) is below 80%. Failing the build."
+          exit 1
+        else
+          echo "Test coverage ($coverage%) meets the threshold. Proceeding."
+        fi
 
     - name: Deploy Application Locally
       run: |
@@ -48,12 +64,8 @@ jobs:
         echo "Deployment completed successfully."
 
     - name: Run the Application
+      if: success()  # Only run if previous steps succeeded
       run: |
         echo "Starting the application..."
         # Start the application locally
-        start C:\Deployments\WinAppAutomation\WinAppAutomation.Win.exe
-        
-    - name: Open the Deployed Application
-      run: |
-        echo "Starting the application..."
         start C:\Deployments\WinAppAutomation\WinAppAutomation.Win.exe
