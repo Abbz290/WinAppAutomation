@@ -28,13 +28,8 @@ jobs:
 
     - name: Configure DevExpress NuGet Source
       run: |
-        # Check if the NuGet source is already added
-        $nugetSources = nuget sources list
-        if ($nugetSources -notcontains "DevExpress NuGet Feed") {
-          nuget sources add -Name "DevExpress NuGet Feed" -Source "https://nuget.devexpress.com/U6YRYNe1qarLOLMFwYiU2R1jQRVmex9dq9SgVPQCd4EtEuhzhU/api/v3/index.json"
-        } else {
-          echo "DevExpress NuGet Feed already exists."
-        }
+        # Add DevExpress NuGet feed, ignore if already added
+        nuget sources add -Name "DevExpress NuGet Feed" -Source "https://nuget.devexpress.com/U6YRYNe1qarLOLMFwYiU2R1jQRVmex9dq9SgVPQCd4EtEuhzhU/api/v3/index.json" || echo "DevExpress NuGet Feed already exists."
 
     - name: Restore Dependencies
       run: dotnet restore WinAppAutomation.sln
@@ -61,4 +56,3 @@ jobs:
         echo "Starting the application..."
         # Start the application locally
         start C:\Deployments\WinAppAutomation\WinAppAutomation.Win.exe
-    
