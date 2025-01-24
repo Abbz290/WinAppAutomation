@@ -52,3 +52,8 @@ jobs:
         echo "Starting the application..."
         # Start the application locally
         start C:\Deployments\WinAppAutomation\WinAppAutomation.Win.exe
+        
+    - name: Open the Deployed Application
+      run: |
+        echo "Starting the application..."
+        start C:\Deployments\WinAppAutomation\WinAppAutomation.Win.exe
