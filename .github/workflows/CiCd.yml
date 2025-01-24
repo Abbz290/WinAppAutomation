@@ -28,7 +28,13 @@ jobs:
 
     - name: Configure DevExpress NuGet Source
       run: |
-        nuget sources add -Name "DevExpress NuGet Feed" -Source "https://nuget.devexpress.com/U6YRYNe1qarLOLMFwYiU2R1jQRVmex9dq9SgVPQCd4EtEuhzhU/api/v3/index.json"
+        # Check if the NuGet source is already added
+        $nugetSources = nuget sources list
+        if ($nugetSources -notcontains "DevExpress NuGet Feed") {
+          nuget sources add -Name "DevExpress NuGet Feed" -Source "https://nuget.devexpress.com/U6YRYNe1qarLOLMFwYiU2R1jQRVmex9dq9SgVPQCd4EtEuhzhU/api/v3/index.json"
+        } else {
+          echo "DevExpress NuGet Feed already exists."
+        }
 
     - name: Restore Dependencies
       run: dotnet restore WinAppAutomation.sln
