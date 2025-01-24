@@ -35,22 +35,27 @@ jobs:
 
     - name: Run Tests with Coverage Check
       run: |
-        dotnet test PersonTests/PersonTests.csproj --configuration Release --collect:"XPlat Code Coverage" \
-        -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=json \
-        --results-directory ./TestResults
-        
+        # Run tests and collect code coverage
+        dotnet test PersonTests/PersonTests.csproj --configuration Release --collect:"XPlat Code Coverage" --results-directory ./TestResults
+
         # Generate coverage report
-        reportgenerator "-reports:./TestResults/**/coverage.cobertura.xml" "-targetdir:./CoverageReport"
+        reportgenerator -reports:TestResults/**/coverage.cobertura.xml -targetdir:CoverageReport
 
         # Check coverage threshold
-        coverage=$(jq '. | tonumber' ./CoverageReport/coverage.json)
-        echo "Coverage: $coverage%"
-        if [ "$coverage" -lt 80 ]; then
-          echo "Test coverage ($coverage%) is below 80%. Failing the build."
+        $coverageReportPath = "./CoverageReport/index.htm"
+        if (Test-Path $coverageReportPath) {
+          $coverage = (Get-Content -Path $coverageReportPath | Select-String -Pattern "Line coverage: (\d+)%").Matches.Groups[1].Value
+          Write-Host "Coverage: $coverage%"
+          if ([int]$coverage -lt 80) {
+            Write-Error "Test coverage ($coverage%) is below 80%. Failing the build."
+            exit 1
+          } else {
+            Write-Host "Test coverage ($coverage%) meets the threshold. Proceeding."
+          }
+        } else {
+          Write-Error "Coverage report not found. Failing the build."
           exit 1
-        else
-          echo "Test coverage ($coverage%) meets the threshold. Proceeding."
-        fi
+        }
 
     - name: Deploy Application Locally
       run: |
