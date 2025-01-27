@@ -1,6 +1,4 @@
-Successful Deployment of WinAppAutomation
-name: CI/CD for DevExpress XPO WinForms App
-
+name: CI/CD for DevExpress XPO WinForms App2
 on:
   push:
     branches:
