@@ -1,4 +1,4 @@
-name: CI/CD for DevExpress XPO WinForms App2
+name: CI/CD for DevExpress XPO WinForms App3
 on:
   push:
     branches:
