@@ -12,7 +12,7 @@ namespace WinAppAutomation.Win;
 public class WinAppAutomationWindowsFormsApplication : WinApplication {
     public WinAppAutomationWindowsFormsApplication() {
         SplashScreen = new DXSplashScreen(typeof(XafSplashScreen), new DefaultOverlayFormOptions());
-        ApplicationName = "WinAppAutomation-Abbas";
+        ApplicationName = "WinAppAutomation-PrACTICE";
         CheckCompatibilityType = DevExpress.ExpressApp.CheckCompatibilityType.DatabaseSchema;
         UseOldTemplates = false;
         DatabaseVersionMismatch += WinAppAutomationWindowsFormsApplication_DatabaseVersionMismatch;
