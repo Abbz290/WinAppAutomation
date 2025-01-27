@@ -35,12 +35,11 @@ jobs:
       run: |
         dotnet test --collect:"XPlat Code Coverage"  # Collects code coverage
         
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v5
       with:
-        token: ${{ secrets.CODECOV_TOKEN }}  # Optional if you want to secure uploads
-        files: ./coverage.cobertura.xml  # Path to the coverage file generated
-        name: codecov-coverage-upload
+        token: ${{ secrets.CODECOV_TOKEN }}
+        slug: Abbz290/WinAppAutomation
 
     - name: Deploy Application Locally
       run: |
